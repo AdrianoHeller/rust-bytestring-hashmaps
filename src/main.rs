@@ -1,7 +1,7 @@
 use std::collections;
 use std::collections::HashMap;
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read,ErrorKind};
 
 fn main() {
     let name = "Straits".to_string();
@@ -110,16 +110,40 @@ fn main() {
 
     let file_path: &str = "./src/props.json";
 
-    let mut file_data = File::open(file_path);
+    let mut file_data = File::open(file_path).unwrap_or_else(|error| {
+        if error.kind() == ErrorKind::NotFound {
+            File::create(file_path).unwrap_or_else(|error| {
+                panic!("Problem creating the file: {:?}",error);
+            })
+        } else {
+            panic!("Problem opening the file: {:?}",error);
+        }
+    });
 
     let mut contents: String = String::new();
 
-    match file_data {
+    let f = File::open(file_path);
+
+    let f = match f {
         Ok(mut file) => {
             file.read_to_string(&mut contents);
         },
-        Err(error) => panic!("Problem opening the file: {:?}", error),
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => {
+                match File::create("./src/props.json") {
+                    Ok(mut fc) => {
+                        fc.read_to_string(&mut contents);
+                    },
+                    Err(e) => panic!("{:?}",e)
+                }
+            },
+            err => {
+                panic!("Problem opening file: {:?}",err)
+            }
+        },
     };
+
+    println!("{:?}",contents);
 
     let vec_keys: Vec<String> = vec![String::from("item"),String::from("version")];
     let vec_values: Vec<String> = vec![String::from("config"),String::from("1.0.0")];
