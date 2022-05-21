@@ -59,4 +59,18 @@ fn main() {
 
     println!("{:#?}",associated_valuation);
 
+    // Create new Heap String to query Hash keys
+    let matched_value: String = String::from("Tesla");
+
+    // Handle Return with Option type
+    match associated_valuation.get(&matched_value) {
+        Some(value) => println!("Value: {}", value),
+        None => println!("There is no value to match search."),
+    }
+
+    // Iteration over hash map's entries -> key/val
+    for (company,val) in &associated_valuation {
+        println!("Company:{}\nValuation:{}\n",company,val);
+    }
+
 }
