@@ -94,9 +94,20 @@ fn main() {
 
     println!("{:?}",unordered_vec);
 
+    let mut float_vec: Vec<f32> = vec![172.12,1.13,55.23,78.14];
+
+    sort_float_vector_input(&mut float_vec);
+
+    println!("{:?}",float_vec);
+
 }
 
 fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
     let sorted_vec = input_vec.sort();
     sorted_vec
+}
+
+fn sort_float_vector_input(float_vector_input: &mut Vec<f32>) -> () {
+    let sorted_float_vec = float_vector_input.sort_by(|a,b| a.partial_cmp(b).unwrap());
+    sorted_float_vec
 }
