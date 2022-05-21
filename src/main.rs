@@ -1,5 +1,7 @@
 use std::collections;
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::Read;
 
 fn main() {
     let name = "Straits".to_string();
@@ -105,6 +107,29 @@ fn main() {
         Some(item) => println!("{}",item),
         None => println!("No item available in that index range"),
     }
+
+    let file_path: &str = "./src/props.json";
+
+    let mut file_data = File::open(file_path);
+
+    let mut contents: String = String::new();
+
+    match file_data {
+        Ok(mut file) => {
+            file.read_to_string(&mut contents);
+        },
+        Err(error) => panic!("Problem opening the file: {:?}", error),
+    };
+
+    let vec_keys: Vec<String> = vec![String::from("item"),String::from("version")];
+    let vec_values: Vec<String> = vec![String::from("config"),String::from("1.0.0")];
+
+    let assert_data: HashMap<_,_> = vec_keys.into_iter().zip(vec_values.into_iter()).collect();
+
+    println!("{:#?}",assert_data);
+
+    assert_eq!(contents,"{\n  \"item\": \"config\",\n  \"version\": \"1.0.0\"\n}");
+
 }
 
 fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
