@@ -88,4 +88,15 @@ fn main() {
 
     println!("{:#?}",mellom);
 
+    let mut unordered_vec: Vec<i32> = vec![201,2,157,13,88];
+
+    sort_vector_input(&mut unordered_vec);
+
+    println!("{:?}",unordered_vec);
+
+}
+
+fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
+    let sorted_vec = input_vec.sort();
+    sorted_vec
 }
