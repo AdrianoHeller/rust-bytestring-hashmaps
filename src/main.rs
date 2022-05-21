@@ -68,9 +68,24 @@ fn main() {
         None => println!("There is no value to match search."),
     }
 
+    // Check if key exists, if not, inserts it
+    associated_valuation.entry(String::from("Mitsubishi")).or_insert(150);
+    associated_valuation.entry(String::from("Tesla")).or_insert(150);
+
     // Iteration over hash map's entries -> key/val
     for (company,val) in &associated_valuation {
         println!("Company:{}\nValuation:{}\n",company,val);
     }
+
+    let text_to_split: &str = "Say friend and you shall enter my good friend";
+
+    let mut mellom: HashMap<_,_> = HashMap::new();
+
+    for word in text_to_split.split_whitespace() {
+        let counted_instances = mellom.entry(word).or_insert(0);
+        *counted_instances += 1;
+    }
+
+    println!("{:#?}",mellom);
 
 }
