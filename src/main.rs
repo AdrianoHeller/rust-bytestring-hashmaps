@@ -100,6 +100,11 @@ fn main() {
 
     println!("{:?}",float_vec);
 
+    // Avoid panicking with Result<T,E>
+    match float_vec.get(100) {
+        Some(item) => println!("{}",item),
+        None => println!("No item available in that index range"),
+    }
 }
 
 fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
