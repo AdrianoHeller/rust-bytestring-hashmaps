@@ -1,4 +1,4 @@
-use std::{collections, io};
+use std::{collections, fs, io};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read,ErrorKind};
@@ -160,6 +160,14 @@ fn main() {
 
     println!("{:#?}",message);
 
+    let read_contents = read_shortly_file_contents("./src/data.json");
+
+    println!("{:?}",read_contents);
+
+    let read_shortly = read_even_shortly_file("./src/data.json");
+
+    println!("{:?}",read_shortly);
+
 }
 
 fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
@@ -167,11 +175,12 @@ fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
     sorted_vec
 }
 
+// Error captured via unwrap
 fn sort_float_vector_input(float_vector_input: &mut Vec<f32>) -> () {
     let sorted_float_vec = float_vector_input.sort_by(|a,b| a.partial_cmp(b).unwrap());
     sorted_float_vec
 }
-
+// Error handled via Match
 fn read_message_from_file(file_name: &str) -> Result<String,io::Error> {
     let mut f = File::open(file_name);
     let mut f = match f {
@@ -186,11 +195,15 @@ fn read_message_from_file(file_name: &str) -> Result<String,io::Error> {
         Err(err) => Err(err),
     }
 }
-
+// Error handled similar to match, but less verbose with ?
 fn read_shortly_file_contents(file_name: &str) -> Result<String,io::Error> {
     let mut string_placeholder = String::new();
 
     File::open(file_name)?.read_to_string(&mut string_placeholder)?;
 
     Ok(string_placeholder)
+}
+// Error and placeholder string container handled internally
+fn read_even_shortly_file(file_name: &str) -> Result<String,io::Error> {
+    fs::read_to_string(file_name)
 }
