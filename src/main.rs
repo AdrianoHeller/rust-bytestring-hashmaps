@@ -186,3 +186,11 @@ fn read_message_from_file(file_name: &str) -> Result<String,io::Error> {
         Err(err) => Err(err),
     }
 }
+
+fn read_shortly_file_contents(file_name: &str) -> Result<String,io::Error> {
+    let mut string_placeholder = String::new();
+
+    File::open(file_name)?.read_to_string(&mut string_placeholder)?;
+
+    Ok(string_placeholder)
+}
