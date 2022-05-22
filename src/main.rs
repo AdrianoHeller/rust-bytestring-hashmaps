@@ -1,4 +1,4 @@
-use std::collections;
+use std::{collections, io};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read,ErrorKind};
@@ -154,6 +154,12 @@ fn main() {
 
     assert_eq!(contents,"{\n  \"item\": \"config\",\n  \"version\": \"1.0.0\"\n}");
 
+    let mut file_name: &str = "./src/data.json";
+
+    let message = read_message_from_file(&file_name);
+
+    println!("{:#?}",message);
+
 }
 
 fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
@@ -164,4 +170,19 @@ fn sort_vector_input(input_vec: &mut Vec<i32>) -> () {
 fn sort_float_vector_input(float_vector_input: &mut Vec<f32>) -> () {
     let sorted_float_vec = float_vector_input.sort_by(|a,b| a.partial_cmp(b).unwrap());
     sorted_float_vec
+}
+
+fn read_message_from_file(file_name: &str) -> Result<String,io::Error> {
+    let mut f = File::open(file_name);
+    let mut f = match f {
+        Ok(file) => file,
+        Err(err) => return Err(err)
+    };
+
+    let mut read_s: String = String::new();
+
+    match f.read_to_string(&mut read_s) {
+        Ok(_) => Ok(read_s),
+        Err(err) => Err(err),
+    }
 }
